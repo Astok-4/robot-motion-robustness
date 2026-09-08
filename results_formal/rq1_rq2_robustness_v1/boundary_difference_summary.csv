@@ -1,0 +1,7 @@
+category,pair_count,pair_fraction
+exact_sampled_agreement,252,0.0984375
+physx_earlier,485,0.189453125
+physx_later,48,0.01875
+both_right_censored,1735,0.677734375
+curobo_only_observed,3,0.001171875
+physx_only_observed,37,0.014453125

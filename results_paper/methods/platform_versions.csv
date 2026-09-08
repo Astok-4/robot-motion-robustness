@@ -1,0 +1,14 @@
+component,value,verification_source,status
+Robot,Franka Panda,configs/experiments/formal_baseline_set_v1.json,VERIFIED
+cuRobo version,Public source at fixed Git commit,results_main/environment.json,VERIFIED
+cuRobo Git commit,8e734f3ced1df898990bcd92de40abce475907db,results_main/environment.json,VERIFIED
+Isaac Sim version,6.0.1.0,results_formal/rq1_rq2_robustness_v1/nominal_run_status.json,VERIFIED
+Python version for cuRobo,3.12.3,results_formal/rq2_planning_time_v1/experiment.json,VERIFIED
+Python version for Isaac Sim,3.12.3,.venv-isaacsim/pyvenv.cfg and direct interpreter query on 2026-08-17,VERIFIED
+PyTorch version,2.13.0+cu130,results_formal/rq2_planning_time_v1/experiment.json,VERIFIED
+CUDA runtime,13.0,results_formal/rq2_planning_time_v1/experiment.json,VERIFIED
+GPU model,NVIDIA GeForce RTX 4080,results_formal/rq2_planning_time_v1/experiment.json,VERIFIED
+Trajectory state count,41,configs/experiments/formal_safety_margin_matrix_v1.json,VERIFIED
+Joint dimensions,7 arm joints,configs/experiments/formal_baseline_set_v1.json,VERIFIED
+Main collision backend,cuRobo collision spheres plus analytical sphere-AABB signed clearance,scripts/curobo/calibrate_planning_obstacle_inflation.py,VERIFIED
+Independent validation backend,Isaac Sim / PhysX contact report,scripts/isaacsim/isaacsim_safety_margin_robustness_validation.py,VERIFIED

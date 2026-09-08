@@ -1,0 +1,5 @@
+corridor_width_mm,first_bypass_inflation_mm,route_nondeterministic,passage_retained_through_20mm
+120,5,False,False
+140,10,False,False
+160,15,False,False
+300,15,False,False

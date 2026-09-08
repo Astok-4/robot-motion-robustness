@@ -1,0 +1,21 @@
+{
+  "experiment_id": "formal_rq2_constrained_space_stress_test_v1",
+  "experiment_type": "supplementary_post_hoc_stress_test",
+  "completed_at_utc": "2026-08-17T09:36:04.698929+00:00",
+  "protocol_sha256": "57e08358e6390d100c940209003b5828392937f6cf5e5063b892d6c907287868",
+  "warmup_calls": 20,
+  "measured_calls": 600,
+  "robustness_experiment_run": false,
+  "torch_version": "2.13.0+cu130",
+  "cuda_version": "13.0",
+  "gpu": "NVIDIA GeForce RTX 4080",
+  "source_sha256": {
+    "diagnostic_all_conditions": "37518b5293f3dfb81378971b8c3b3d256f6e23663f057c2be563c995536e9447",
+    "diagnostic_audit": "e277242052bcca2066941548f7076e717bf719f806f738719cf0f928c8da11e4",
+    "gate_region_metadata": "acead30156ab8b684ed5eb3567b95b986959a651e2c07bad9fdf8b5ac29abc6b",
+    "configs/experiments/formal_baseline_set_v1.json": "3a3b4806e2a407253006be509063ccf4b584c873bc5e8e8f9110949de94e8f6b",
+    "configs/experiments/formal_safety_margin_matrix_v1.json": "8869b9709cf6c84274d77e2d28a2bf8354eb15f3e3740362da0b2d8871880d04",
+    "configs/experiments/formal_direction_set_v1.csv": "4ee274983d2e3db633a1543816e698733e0a07773016e80fa0bfd815d15f3ada",
+    "configs/experiments/formal_rq1_rq2_protocol_v1.json": "eb270c2219460b44a1e9ff445b66dc40b18d1f4690383c66d6478419dba3022f"
+  }
+}

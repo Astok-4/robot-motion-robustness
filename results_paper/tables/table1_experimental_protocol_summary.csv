@@ -1,0 +1,22 @@
+component,setting
+Robot,Franka Panda
+Main scenes,4
+Safety-margin levels,"0/5/10/15/20 mm per obstacle surface"
+Frozen trajectories,20
+Trajectory states,41
+Arm joint dimensions,7
+Formal directions,128 deterministic Fibonacci-sphere directions
+Perturbation coordinates,World-coordinate obstacle translation
+Coarse perturbation range,2–60 mm
+Coarse step,2 mm
+Boundary refinement,"Deterministic bisection to interval width <=0.5 mm"
+Right censoring,">60 mm"
+Primary robustness backend,Isaac Sim / PhysX
+Collision criterion,PhysX reported separation <=0 m
+Planning warm-up,20 excluded calls
+Planning repetitions,30 per condition
+Measured planning calls,600
+Robustness replanning,Not allowed
+Secondary formal extension,Constant single-joint bias on four frozen 0-mm trajectories
+Joint directions and magnitudes,"14 sampled axes; 0.5/1/2/3/4/6/8 deg"
+Joint boundary refinement,"PhysX-primary interval width <=0.1 deg; >8 deg right censoring"

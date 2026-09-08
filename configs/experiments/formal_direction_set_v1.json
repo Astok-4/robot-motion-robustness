@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "direction_set_id": "formal_direction_set_v1",
+  "direction_set_status": "FROZEN",
+  "direction_count": 128,
+  "coordinate_frame": "world",
+  "generation_method": "deterministic Fibonacci sphere",
+  "runtime_randomness": false,
+  "pilot_results_used_for_generation_or_selection": false,
+  "local_danger_direction_used_for_density_or_selection": false,
+  "parameters": {
+    "index_range": [
+      0,
+      127
+    ],
+    "z_formula": "1 - 2 * (i + 0.5) / 128",
+    "azimuth_formula": "i * pi * (3 - sqrt(5))",
+    "pole_offset": 0.5
+  },
+  "csv_file": "configs/experiments/formal_direction_set_v1.csv",
+  "csv_sha256": "4ee274983d2e3db633a1543816e698733e0a07773016e80fa0bfd815d15f3ada",
+  "audit": {
+    "status": "PASS",
+    "checks": {
+      "exactly_128": true,
+      "ids_unique": true,
+      "vectors_finite": true,
+      "unit_norm_max_error_le_1e_12": true,
+      "no_exact_or_15_decimal_duplicate": true,
+      "mean_vector_norm_le_0_01": true,
+      "second_moment_max_deviation_from_one_third_le_0_01": true,
+      "hemisphere_count_imbalance_le_2": true
+    },
+    "maximum_unit_norm_error": 1.1102230246251565e-16,
+    "mean_vector": [
+      -1.2683829295037969e-05,
+      0.00041680925213036533,
+      0.0
+    ],
+    "mean_vector_norm": 0.00041700219686119177,
+    "axis_second_moments": {
+      "x": 0.3332677515837153,
+      "y": 0.3334192601350347,
+      "z": 0.33331298828125
+    },
+    "hemisphere_counts": {
+      "x": {
+        "positive": 64,
+        "negative": 64,
+        "zero": 0
+      },
+      "y": {
+        "positive": 63,
+        "negative": 64,
+        "zero": 1
+      },
+      "z": {
+        "positive": 64,
+        "negative": 64,
+        "zero": 0
+      }
+    }
+  }
+}

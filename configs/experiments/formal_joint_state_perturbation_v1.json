@@ -1,0 +1,30 @@
+{
+  "experiment_id": "formal_joint_state_perturbation_v1",
+  "status": "FROZEN",
+  "experiment_role": "SECONDARY FORMAL EXTENSION",
+  "matrix_file": "configs/experiments/formal_safety_margin_matrix_v1.json",
+  "selected_inflation_mm": 0,
+  "scene_count": 4,
+  "direction_file": "configs/experiments/formal_joint_state_direction_set_v1.json",
+  "direction_count": 14,
+  "coarse_nonzero_magnitudes_deg": [0.5, 1.0, 2.0, 3.0, 4.0, 6.0, 8.0],
+  "maximum_magnitude_deg": 8.0,
+  "bias_semantics": "same deterministic single-joint bias applied to all 41 ordered states",
+  "full_coarse_scan_after_collision": true,
+  "right_censoring_rule": "safe through 8 degrees is reported as >8 degrees within evaluated range",
+  "boundary_definition": "first safe-to-collision transition",
+  "boundary_refinement": {
+    "method": "deterministic binary bisection",
+    "maximum_interval_width_deg": 0.1,
+    "primary_interval": "[last_safe_deg, first_collision_deg]",
+    "midpoint_is_convenience_estimate": true
+  },
+  "primary_backend": "Isaac Sim / PhysX",
+  "auxiliary_backend": "cuRobo collision spheres and analytical AABB",
+  "collision_criterion": "backend distance or separation <= 0",
+  "trajectory_frozen": true,
+  "replanning_after_perturbation": false,
+  "obstacle_unchanged": true,
+  "random_sampling_used": false,
+  "combined_perturbation_used": false
+}

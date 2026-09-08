@@ -1,0 +1,25 @@
+{
+  "experiment_id": "canonical_formal_rq1_rq2_robustness_v1",
+  "status": "prepared",
+  "backend": "sequential PhysX",
+  "nominal_trial_count": 20,
+  "coarse_trial_count": 76800,
+  "condition_count": 20,
+  "direction_count": 128,
+  "coarse_magnitude_count": 30,
+  "trajectory_shape": [
+    41,
+    7
+  ],
+  "trajectory_frozen": true,
+  "replanned_after_perturbation": false,
+  "motion_planner_invoked": false,
+  "collision_criterion": "minimum reported separation <= 0.0 m",
+  "frozen_sha256": {
+    "configs/experiments/formal_baseline_set_v1.json": "3a3b4806e2a407253006be509063ccf4b584c873bc5e8e8f9110949de94e8f6b",
+    "configs/experiments/formal_safety_margin_matrix_v1.json": "8869b9709cf6c84274d77e2d28a2bf8354eb15f3e3740362da0b2d8871880d04",
+    "configs/experiments/formal_rq1_rq2_protocol_v1.json": "eb270c2219460b44a1e9ff445b66dc40b18d1f4690383c66d6478419dba3022f",
+    "configs/experiments/formal_direction_set_v1.csv": "4ee274983d2e3db633a1543816e698733e0a07773016e80fa0bfd815d15f3ada"
+  },
+  "candidate_005_20mm_bottleneck_switch_retained": true
+}

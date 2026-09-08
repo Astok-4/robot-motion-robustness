@@ -1,0 +1,31 @@
+{
+  "experiment_id": "formal_rq2_planning_time_v1",
+  "status": "execution_complete_pending_audit",
+  "execution_started_utc": "2026-08-17T05:56:29.517028+00:00",
+  "execution_finished_utc": "2026-08-17T05:56:55.038873+00:00",
+  "wall_time_this_process_s": 25.521856706000108,
+  "frozen_sha256": {
+    "configs/experiments/formal_baseline_set_v1.json": "3a3b4806e2a407253006be509063ccf4b584c873bc5e8e8f9110949de94e8f6b",
+    "configs/experiments/formal_safety_margin_matrix_v1.json": "8869b9709cf6c84274d77e2d28a2bf8354eb15f3e3740362da0b2d8871880d04",
+    "configs/experiments/formal_rq1_rq2_protocol_v1.json": "eb270c2219460b44a1e9ff445b66dc40b18d1f4690383c66d6478419dba3022f"
+  },
+  "planner_configuration_file_sha256": "bf10490e94ab6637fbcc256c18224e09a7b28694848baace5fe7dfd717de4ed5",
+  "planner_configuration": {
+    "robot_config": "franka.yml",
+    "random_seed": 0,
+    "optimizer_collision_activation_distance_m": 0.01,
+    "max_attempts": 5,
+    "warmup_iterations": 5
+  },
+  "curobo_commit": "8e734f3",
+  "python_version": "3.12.3",
+  "pytorch_version": "2.13.0+cu130",
+  "cuda_runtime": "13.0",
+  "gpu_model": "NVIDIA GeForce RTX 4080",
+  "warmup_attempt_count": 20,
+  "measured_attempt_count": 600,
+  "resume_supported_by_attempt_id": true,
+  "crash_resume_occurred": false,
+  "process_resume_count": 0,
+  "robustness_experiment_run": false
+}

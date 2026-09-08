@@ -1,0 +1,5 @@
+corridor_width_mm,first_bypass_inflation_mm,route_consistency,trajectory_length_change_at_20mm_percent,planning_success,planner_median_range_ms,gate_local_clearance_at_0mm,reference_role
+120,5,30/30 for every condition,11.346074520816174,150/150,27.217-28.211,14.381632208824158,constrained corridor
+140,10,30/30 for every condition,5.0231796117424565,150/150,27.688-28.358,21.480485796928406,constrained corridor
+160,15,30/30 for every condition,1.7497241003549657,150/150,27.511-28.455,29.250450432300568,constrained corridor
+300,15,30/30 for every condition,0.7568769044274504,150/150,27.452-28.313,54.68371883034706,widest calibrated reference within predefined range

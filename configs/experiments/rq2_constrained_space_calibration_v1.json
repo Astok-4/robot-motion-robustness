@@ -1,0 +1,43 @@
+{
+  "experiment_id": "rq2_constrained_space_calibration_v1",
+  "status": "CALIBRATION_ONLY_NOT_FROZEN",
+  "source_matrix": "configs/experiments/formal_safety_margin_matrix_v1.json",
+  "source_condition_id": "formal_baseline_v1__inflation_000mm",
+  "robot_config": "franka.yml",
+  "corridor_definition": "surface_to_surface_free_gap_between_two_box_inner_x_faces",
+  "gate": {
+    "geometry_revision": 5,
+    "revision_note": "Attempt 4 produced only a 300-mm/0-mm endpoint-limited condition. Revision 5 places short local posts at the internal hand-path crossing, so fixed endpoints remain separated while above/below bypass remains explicitly auditable. Attempts 1-4 are retained.",
+    "plane_axis": "y",
+    "plane_position_m": 0.1657354,
+    "opening_axis": "x",
+    "opening_center_m": 0.2641,
+    "box_depth_y_m": 0.005,
+    "box_outer_span_x_m": 0.8,
+    "box_height_z_m": 0.005,
+    "box_center_z_m": 0.585
+  },
+  "initial_corridor_widths_mm": [100, 120, 140, 160, 180, 200, 220],
+  "narrow_extension_widths_mm": [90, 80, 70, 60],
+  "wide_extension_widths_mm": [240, 260, 280, 300],
+  "inflation_levels_mm": [0, 5, 10, 15, 20],
+  "planning_repetitions": 2,
+  "canonical_run": 1,
+  "planning_inflation_semantics": "each obstacle face expands outward by inflation_mm; every box dimension increases by 2*inflation",
+  "evaluation_geometry": "original_uninflated_two_box_geometry",
+  "planner": {
+    "random_seed": 0,
+    "optimizer_collision_activation_distance_m": 0.01,
+    "warmup_iterations": 5,
+    "max_attempts": 5
+  },
+  "extension_rule": {
+    "narrower": "only if all initial width-by-inflation canonical conditions plan successfully and use the passage; test 90,80,70,60 mm in order until a constrained transition is present",
+    "wider": "only if 220 mm at 0 mm inflation is not a valid passage condition; test 240,260,280,300 mm in order until a valid 0-mm passage exists"
+  },
+  "scientific_scope": {
+    "formal_timing_benchmark": false,
+    "robustness_perturbation": false,
+    "automatic_matrix_freeze": false
+  }
+}

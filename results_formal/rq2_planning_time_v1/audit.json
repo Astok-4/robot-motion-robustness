@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "audit_label": "FORMAL_RQ2_PLANNING_TIME_V1_AUDIT_PASS",
+  "warmup_attempt_count": 20,
+  "warmup_success_count": 20,
+  "measured_attempt_count": 600,
+  "condition_count": 20,
+  "attempts_per_condition": 30,
+  "measured_success_count": 600,
+  "measured_failure_count": 0,
+  "invalid_success_count": 0,
+  "execution_order_matches_frozen_protocol": true,
+  "duplicate_attempt_count": 0,
+  "missing_scheduled_attempt_count": 0,
+  "failures_retained": true,
+  "exact_frozen_trajectory_match_count": 600,
+  "tolerance_frozen_trajectory_match_count": 600,
+  "frozen_sha256": {
+    "configs/experiments/formal_baseline_set_v1.json": "3a3b4806e2a407253006be509063ccf4b584c873bc5e8e8f9110949de94e8f6b",
+    "configs/experiments/formal_safety_margin_matrix_v1.json": "8869b9709cf6c84274d77e2d28a2bf8354eb15f3e3740362da0b2d8871880d04",
+    "configs/experiments/formal_rq1_rq2_protocol_v1.json": "eb270c2219460b44a1e9ff445b66dc40b18d1f4690383c66d6478419dba3022f"
+  },
+  "robustness_statistical_analysis_run": false,
+  "generated_utc": "2026-08-17T05:57:58.382290+00:00"
+}

@@ -1,0 +1,3 @@
+condition_id,corridor_width_mm,inflation_mm,effective_planning_gap_mm,route_category
+corridor_160mm__inflation_010mm,160,10,140,passage
+corridor_220mm__inflation_015mm,220,15,190,upper_bypass

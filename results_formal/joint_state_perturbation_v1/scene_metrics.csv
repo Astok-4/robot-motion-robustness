@@ -1,0 +1,5 @@
+scene_id,nominal_curobo_clearance_m,nominal_physx_separation_m,minimum_sampled_axis_direction_tolerance_upper_deg,most_sensitive_directions,physx_observed_boundary_count,physx_right_censored_count
+formal_baseline_v1,0.013645913451910019,0.013991013169288635,1.875,"[""positive_J4""]",2,12
+multiscene_candidate_001,0.010950425639748573,0.010678771883249283,1.3125,"[""negative_J4""]",2,12
+multiscene_candidate_005,0.009976143017411232,0.009165994822978973,1.1875,"[""negative_J4""]",3,11
+multiscene_candidate_006,0.010480690747499466,0.007789723575115204,1.0625,"[""positive_J4""]",3,11

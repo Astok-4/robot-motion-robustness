@@ -1,0 +1,23 @@
+{
+  "direction_set_id": "formal_joint_state_direction_set_v1",
+  "status": "FROZEN",
+  "coordinate_system": "Franka active arm joint axes",
+  "random_sampling_used": false,
+  "multi_joint_directions_used": false,
+  "directions": [
+    {"direction_id": "positive_J1", "joint_index": 0, "joint_name": "panda_joint1", "sign": "positive", "axis_value": 1.0},
+    {"direction_id": "negative_J1", "joint_index": 0, "joint_name": "panda_joint1", "sign": "negative", "axis_value": -1.0},
+    {"direction_id": "positive_J2", "joint_index": 1, "joint_name": "panda_joint2", "sign": "positive", "axis_value": 1.0},
+    {"direction_id": "negative_J2", "joint_index": 1, "joint_name": "panda_joint2", "sign": "negative", "axis_value": -1.0},
+    {"direction_id": "positive_J3", "joint_index": 2, "joint_name": "panda_joint3", "sign": "positive", "axis_value": 1.0},
+    {"direction_id": "negative_J3", "joint_index": 2, "joint_name": "panda_joint3", "sign": "negative", "axis_value": -1.0},
+    {"direction_id": "positive_J4", "joint_index": 3, "joint_name": "panda_joint4", "sign": "positive", "axis_value": 1.0},
+    {"direction_id": "negative_J4", "joint_index": 3, "joint_name": "panda_joint4", "sign": "negative", "axis_value": -1.0},
+    {"direction_id": "positive_J5", "joint_index": 4, "joint_name": "panda_joint5", "sign": "positive", "axis_value": 1.0},
+    {"direction_id": "negative_J5", "joint_index": 4, "joint_name": "panda_joint5", "sign": "negative", "axis_value": -1.0},
+    {"direction_id": "positive_J6", "joint_index": 5, "joint_name": "panda_joint6", "sign": "positive", "axis_value": 1.0},
+    {"direction_id": "negative_J6", "joint_index": 5, "joint_name": "panda_joint6", "sign": "negative", "axis_value": -1.0},
+    {"direction_id": "positive_J7", "joint_index": 6, "joint_name": "panda_joint7", "sign": "positive", "axis_value": 1.0},
+    {"direction_id": "negative_J7", "joint_index": 6, "joint_name": "panda_joint7", "sign": "negative", "axis_value": -1.0}
+  ]
+}

@@ -1,0 +1,2293 @@
+{
+  "schema_version": 1,
+  "protocol_id": "formal_rq1_rq2_protocol_v1",
+  "protocol_status": "FROZEN",
+  "preregistered_before_formal_results": true,
+  "research_questions": {
+    "RQ1": "whether cuRobo nominal clearance predicts independently PhysX-validated perturbation robustness",
+    "RQ2": "whether planning-time safety margin improves robustness and its planning/trajectory cost",
+    "RQ3_auxiliary": "cross-engine collision-boundary agreement"
+  },
+  "formal_assets": {
+    "baseline_set_file": "configs/experiments/formal_baseline_set_v1.json",
+    "baseline_set_sha256": "3a3b4806e2a407253006be509063ccf4b584c873bc5e8e8f9110949de94e8f6b",
+    "safety_margin_matrix_file": "configs/experiments/formal_safety_margin_matrix_v1.json",
+    "safety_margin_matrix_sha256": "8869b9709cf6c84274d77e2d28a2bf8354eb15f3e3740362da0b2d8871880d04",
+    "metrics_spec_file": "docs/PERTURBATION_ROBUSTNESS_METRICS_V1.md",
+    "metrics_spec_sha256": "1d41472b8768f995610d0c2b5c38a15ffaa9fbaec6808fed06485f2c7f94373c",
+    "direction_csv_file": "configs/experiments/formal_direction_set_v1.csv",
+    "direction_csv_sha256": "4ee274983d2e3db633a1543816e698733e0a07773016e80fa0bfd815d15f3ada",
+    "direction_metadata_file": "configs/experiments/formal_direction_set_v1.json",
+    "direction_metadata_sha256": "6b23ac2011488958fc9b82a8cc5e75d727cdb80fff958c2e3f031724635972c5"
+  },
+  "design": {
+    "scene_count": 4,
+    "trajectory_count": 20,
+    "inflation_levels_mm": [
+      0,
+      5,
+      10,
+      15,
+      20
+    ],
+    "direction_count": 128,
+    "directions_shared_by_all_trajectories": true,
+    "trajectory_frozen": true,
+    "replanning_after_perturbation": false,
+    "evaluation_geometry": "original_nominal_geometry",
+    "candidate_005_20mm_retained": true,
+    "candidate_005_20mm_bottleneck_switch_retained_as_secondary_explanatory_factor": true
+  },
+  "perturbation_protocol": {
+    "type": "world-coordinate obstacle translation",
+    "nominal_validation_once_per_trajectory": true,
+    "nominal_repeated_per_direction": false,
+    "coarse_nonzero_magnitudes_mm": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      22,
+      24,
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      50,
+      52,
+      54,
+      56,
+      58,
+      60
+    ],
+    "coarse_step_mm": 2,
+    "maximum_magnitude_mm": 60,
+    "evaluate_complete_coarse_grid_after_first_collision": true,
+    "right_censoring_rule": "if no collision through 60 mm, threshold is null and right_censored_above_60mm is true",
+    "collision_to_safe_transitions_retained": true,
+    "first_boundary_definition": "first sampled safe-to-collision transition"
+  },
+  "boundary_refinement": {
+    "enabled_for_first_safe_to_collision_coarse_bracket": true,
+    "method": "deterministic binary bisection",
+    "maximum_interval_width_mm": 0.5,
+    "lower_endpoint_semantics": "last known safe bound",
+    "upper_endpoint_semantics": "first known collision bound",
+    "primary_representation": "(lower_safe_bound_mm, upper_collision_bound_mm]",
+    "midpoint_optional": true,
+    "midpoint_label": "estimated_threshold_midpoint_mm",
+    "midpoint_is_exact_ground_truth": false
+  },
+  "outcomes": {
+    "RQ1_RQ2_primary_engine": "Isaac Sim / PhysX",
+    "primary": [
+      "c_curobo",
+      "c_physx",
+      "refined_physx_first_collision_interval",
+      "physx_directional_threshold_distribution",
+      "physx_fixed_budget_robustness_curve",
+      "physx_minimum_directional_tolerance_over_fixed_set",
+      "physx_right_censored_direction_fraction"
+    ],
+    "fixed_budget_report_mm": [
+      10,
+      20,
+      30,
+      40,
+      50,
+      60
+    ],
+    "complete_2mm_curve_saved": true,
+    "collision_rate_interpretation": "empirical fraction over the fixed 128-direction synthetic set, not real-world collision probability",
+    "curobo_robustness_role": "cross-engine comparison and RQ3 auxiliary analysis"
+  },
+  "analysis_policy": {
+    "primary_scope": "within-scene ordered safety-margin analysis",
+    "within_scene_conditions": [
+      0,
+      5,
+      10,
+      15,
+      20
+    ],
+    "report_four_scene_specific_trends": true,
+    "report_cross_scene_consistency": true,
+    "twenty_trajectories_are_twenty_independent_scenes": false,
+    "scene_grouping_must_be_explicit": true,
+    "direction_samples_are_independent_scene_samples": false,
+    "pooled_pearson_or_spearman_as_only_evidence_forbidden": true,
+    "machine_learning_predictor_forbidden": true,
+    "inferential_statistics_requires_separate_frozen_specification": true,
+    "statistics_run_during_protocol_freeze": false
+  },
+  "planning_timing_protocol": {
+    "separate_from_robustness_timing": true,
+    "warmup_call_count": 20,
+    "warmup_schedule": [
+      "formal_baseline_v1__inflation_000mm",
+      "formal_baseline_v1__inflation_005mm",
+      "formal_baseline_v1__inflation_010mm",
+      "formal_baseline_v1__inflation_015mm",
+      "formal_baseline_v1__inflation_020mm",
+      "multiscene_candidate_001__inflation_000mm",
+      "multiscene_candidate_001__inflation_005mm",
+      "multiscene_candidate_001__inflation_010mm",
+      "multiscene_candidate_001__inflation_015mm",
+      "multiscene_candidate_001__inflation_020mm",
+      "multiscene_candidate_005__inflation_000mm",
+      "multiscene_candidate_005__inflation_005mm",
+      "multiscene_candidate_005__inflation_010mm",
+      "multiscene_candidate_005__inflation_015mm",
+      "multiscene_candidate_005__inflation_020mm",
+      "multiscene_candidate_006__inflation_000mm",
+      "multiscene_candidate_006__inflation_005mm",
+      "multiscene_candidate_006__inflation_010mm",
+      "multiscene_candidate_006__inflation_015mm",
+      "multiscene_candidate_006__inflation_020mm"
+    ],
+    "warmup_calls_excluded_from_results": true,
+    "measured_repetitions_per_condition": 30,
+    "measured_round_count": 30,
+    "measured_condition_count_per_round": 20,
+    "total_measured_planning_calls": 600,
+    "execution_order_method": "precomputed interleaved cyclic rotations with offset (7 * round_index) mod 20",
+    "execution_schedule": [
+      {
+        "round_index": 1,
+        "cyclic_offset": 0,
+        "condition_order": [
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm"
+        ]
+      },
+      {
+        "round_index": 2,
+        "cyclic_offset": 7,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm"
+        ]
+      },
+      {
+        "round_index": 3,
+        "cyclic_offset": 14,
+        "condition_order": [
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm"
+        ]
+      },
+      {
+        "round_index": 4,
+        "cyclic_offset": 1,
+        "condition_order": [
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm"
+        ]
+      },
+      {
+        "round_index": 5,
+        "cyclic_offset": 8,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm"
+        ]
+      },
+      {
+        "round_index": 6,
+        "cyclic_offset": 15,
+        "condition_order": [
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm"
+        ]
+      },
+      {
+        "round_index": 7,
+        "cyclic_offset": 2,
+        "condition_order": [
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm"
+        ]
+      },
+      {
+        "round_index": 8,
+        "cyclic_offset": 9,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm"
+        ]
+      },
+      {
+        "round_index": 9,
+        "cyclic_offset": 16,
+        "condition_order": [
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm"
+        ]
+      },
+      {
+        "round_index": 10,
+        "cyclic_offset": 3,
+        "condition_order": [
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm"
+        ]
+      },
+      {
+        "round_index": 11,
+        "cyclic_offset": 10,
+        "condition_order": [
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm"
+        ]
+      },
+      {
+        "round_index": 12,
+        "cyclic_offset": 17,
+        "condition_order": [
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm"
+        ]
+      },
+      {
+        "round_index": 13,
+        "cyclic_offset": 4,
+        "condition_order": [
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm"
+        ]
+      },
+      {
+        "round_index": 14,
+        "cyclic_offset": 11,
+        "condition_order": [
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm"
+        ]
+      },
+      {
+        "round_index": 15,
+        "cyclic_offset": 18,
+        "condition_order": [
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm"
+        ]
+      },
+      {
+        "round_index": 16,
+        "cyclic_offset": 5,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm"
+        ]
+      },
+      {
+        "round_index": 17,
+        "cyclic_offset": 12,
+        "condition_order": [
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm"
+        ]
+      },
+      {
+        "round_index": 18,
+        "cyclic_offset": 19,
+        "condition_order": [
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm"
+        ]
+      },
+      {
+        "round_index": 19,
+        "cyclic_offset": 6,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm"
+        ]
+      },
+      {
+        "round_index": 20,
+        "cyclic_offset": 13,
+        "condition_order": [
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm"
+        ]
+      },
+      {
+        "round_index": 21,
+        "cyclic_offset": 0,
+        "condition_order": [
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm"
+        ]
+      },
+      {
+        "round_index": 22,
+        "cyclic_offset": 7,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm"
+        ]
+      },
+      {
+        "round_index": 23,
+        "cyclic_offset": 14,
+        "condition_order": [
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm"
+        ]
+      },
+      {
+        "round_index": 24,
+        "cyclic_offset": 1,
+        "condition_order": [
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm"
+        ]
+      },
+      {
+        "round_index": 25,
+        "cyclic_offset": 8,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm"
+        ]
+      },
+      {
+        "round_index": 26,
+        "cyclic_offset": 15,
+        "condition_order": [
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm"
+        ]
+      },
+      {
+        "round_index": 27,
+        "cyclic_offset": 2,
+        "condition_order": [
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm"
+        ]
+      },
+      {
+        "round_index": 28,
+        "cyclic_offset": 9,
+        "condition_order": [
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm"
+        ]
+      },
+      {
+        "round_index": 29,
+        "cyclic_offset": 16,
+        "condition_order": [
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm",
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm"
+        ]
+      },
+      {
+        "round_index": 30,
+        "cyclic_offset": 3,
+        "condition_order": [
+          "formal_baseline_v1__inflation_015mm",
+          "formal_baseline_v1__inflation_020mm",
+          "multiscene_candidate_001__inflation_000mm",
+          "multiscene_candidate_001__inflation_005mm",
+          "multiscene_candidate_001__inflation_010mm",
+          "multiscene_candidate_001__inflation_015mm",
+          "multiscene_candidate_001__inflation_020mm",
+          "multiscene_candidate_005__inflation_000mm",
+          "multiscene_candidate_005__inflation_005mm",
+          "multiscene_candidate_005__inflation_010mm",
+          "multiscene_candidate_005__inflation_015mm",
+          "multiscene_candidate_005__inflation_020mm",
+          "multiscene_candidate_006__inflation_000mm",
+          "multiscene_candidate_006__inflation_005mm",
+          "multiscene_candidate_006__inflation_010mm",
+          "multiscene_candidate_006__inflation_015mm",
+          "multiscene_candidate_006__inflation_020mm",
+          "formal_baseline_v1__inflation_000mm",
+          "formal_baseline_v1__inflation_005mm",
+          "formal_baseline_v1__inflation_010mm"
+        ]
+      }
+    ],
+    "per_call_fields": [
+      "condition_id",
+      "round_index",
+      "planning_success",
+      "planner_reported_solve_time_s",
+      "wall_clock_time_s",
+      "error"
+    ],
+    "summary_fields": [
+      "success_count",
+      "median",
+      "IQR",
+      "minimum",
+      "maximum"
+    ],
+    "planner_reported_and_wall_clock_reported_separately": true,
+    "best_run_selection_forbidden": true,
+    "narrow_passage_stress_test_deferred": true
+  },
+  "reproducibility_strategy": {
+    "full_dataset_unconditional_second_run_required": false,
+    "canonical_full_run_count": 1,
+    "pair_population": 2560,
+    "audit_pair_count": 256,
+    "audit_fraction": 0.1,
+    "selection_independent_of_formal_results": true,
+    "selection_rule": "12 or 13 lowest SHA-256-ranked directions within every condition; first 16 matrix conditions receive 13, last 4 receive 12",
+    "coverage": "all 4 scenes and all 5 inflation levels via every condition",
+    "fixed_coarse_audit_magnitudes_mm": [
+      10,
+      30,
+      60
+    ],
+    "boundary_refinement_audit_rule": "for selected pairs, replay every canonical boundary-refinement magnitude that exists",
+    "audit_pairs": [
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_000",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_013",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_030",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_046",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_051",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_062",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_063",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_066",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_076",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_086",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_090",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_105",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_000mm",
+        "direction_id": "direction_124",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_008",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_013",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_048",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_050",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_053",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_056",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_074",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_083",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_084",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_089",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_100",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_111",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_005mm",
+        "direction_id": "direction_122",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_009",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_027",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_030",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_031",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_044",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_048",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_068",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_083",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_084",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_092",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_099",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_103",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_010mm",
+        "direction_id": "direction_111",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_002",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_016",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_021",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_022",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_033",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_044",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_061",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_064",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_072",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_079",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_080",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_082",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_015mm",
+        "direction_id": "direction_087",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_003",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_018",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_033",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_037",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_046",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_054",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_085",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_087",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_101",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_102",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_107",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_119",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "formal_baseline_v1__inflation_020mm",
+        "direction_id": "direction_122",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_007",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_015",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_037",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_051",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_067",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_075",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_082",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_086",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_090",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_095",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_112",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_117",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_000mm",
+        "direction_id": "direction_120",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_015",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_032",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_061",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_078",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_079",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_082",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_088",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_090",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_100",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_104",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_107",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_110",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_005mm",
+        "direction_id": "direction_126",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_008",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_017",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_031",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_041",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_063",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_070",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_080",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_083",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_084",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_103",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_110",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_123",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_010mm",
+        "direction_id": "direction_127",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_001",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_042",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_044",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_069",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_080",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_081",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_082",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_091",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_098",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_099",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_115",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_117",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_015mm",
+        "direction_id": "direction_123",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_006",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_011",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_020",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_023",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_031",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_037",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_040",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_047",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_053",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_096",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_099",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_110",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_001__inflation_020mm",
+        "direction_id": "direction_127",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_001",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_005",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_010",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_015",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_018",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_019",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_020",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_033",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_035",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_056",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_080",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_105",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_000mm",
+        "direction_id": "direction_126",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_034",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_039",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_041",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_071",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_074",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_081",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_087",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_093",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_097",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_105",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_114",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_124",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_005mm",
+        "direction_id": "direction_127",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_005",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_007",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_023",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_034",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_052",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_064",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_065",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_085",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_086",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_090",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_098",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_103",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_010mm",
+        "direction_id": "direction_112",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_012",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_022",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_024",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_031",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_042",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_043",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_048",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_066",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_093",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_100",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_115",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_126",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_015mm",
+        "direction_id": "direction_127",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_016",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_027",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_032",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_034",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_043",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_050",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_064",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_076",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_107",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_110",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_112",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_122",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_005__inflation_020mm",
+        "direction_id": "direction_127",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_008",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_010",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_014",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_019",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_022",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_031",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_044",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_049",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_076",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_079",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_094",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_114",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_000mm",
+        "direction_id": "direction_126",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_013",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_020",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_025",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_027",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_031",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_039",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_044",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_062",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_078",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_117",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_122",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_005mm",
+        "direction_id": "direction_125",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_002",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_007",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_009",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_015",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_049",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_051",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_054",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_056",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_077",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_097",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_106",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_010mm",
+        "direction_id": "direction_112",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_003",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_006",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_010",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_019",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_031",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_046",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_058",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_072",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_080",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_094",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_099",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_015mm",
+        "direction_id": "direction_107",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_005",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_013",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_041",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_048",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_053",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_064",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_066",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_069",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_089",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_095",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_112",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      },
+      {
+        "condition_id": "multiscene_candidate_006__inflation_020mm",
+        "direction_id": "direction_127",
+        "selection_rule": "lowest pre-result SHA-256 ranks within condition"
+      }
+    ],
+    "failure_policy": "stop formal analysis and investigate any real reproducibility discrepancy"
+  },
+  "estimated_size": {
+    "coarse_nonzero_trials": 76800,
+    "trajectory_states_per_trial": 41,
+    "maximum_coarse_physx_state_evaluations": 3148800,
+    "additional_nominal_and_boundary_refinement_trials": true
+  },
+  "parallelization_policy": {
+    "role": "execution acceleration only; not a scientific variable or contribution",
+    "protocol_depends_on_parallelization": false,
+    "parallel_execution_requires_prior_sequential_equivalence_test": true
+  },
+  "forbidden_protocol_changes_after_freeze": [
+    "change directions or direction count",
+    "select directions using pilot or formal collision outcomes",
+    "change the 2-mm coarse grid or 60-mm cap",
+    "stop coarse evaluation after first collision",
+    "change the 0.5-mm refinement target",
+    "change censoring semantics",
+    "delete collision-to-safe or disagreement cases",
+    "change timing repetitions, warm-up, or schedule based on results",
+    "remove candidate_005 inflation 20 mm",
+    "silently modify Formal Baseline Set V1 or Formal Safety-Margin Matrix V1"
+  ],
+  "revision_policy": "any required post-freeze change must create an explicit V2 with a documented reason",
+  "formal_experiment_executed_during_freeze": false
+}

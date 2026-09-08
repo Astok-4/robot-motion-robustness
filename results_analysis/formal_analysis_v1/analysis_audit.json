@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "audit_label": "FORMAL_ANALYSIS_V1_AUDIT_PASS",
+  "formal_condition_count": 20,
+  "condition_ids_match_both_formal_datasets": true,
+  "scene_count": 4,
+  "conditions_per_scene": 5,
+  "within_scene_analysis_primary": true,
+  "conditions_treated_as_independent_scenes": false,
+  "new_experiments_run": false,
+  "inferential_significance_tests_run": false,
+  "machine_learning_run": false,
+  "timing_spikes_retained": true,
+  "candidate_005_20mm_bottleneck_switch_retained": true,
+  "physx_collision_to_safe_pair_count_retained": 3,
+  "curobo_collision_to_safe_pair_count_retained": 1,
+  "one_engine_only_boundary_cases_retained": 40,
+  "figure_count": 8,
+  "figure_files": [
+    "results_analysis/formal_analysis_v1/figures/figure1_clearance_vs_physx_tolerance.png",
+    "results_analysis/formal_analysis_v1/figures/figure1_clearance_vs_physx_tolerance.svg",
+    "results_analysis/formal_analysis_v1/figures/figure2_physx_robustness_curves.png",
+    "results_analysis/formal_analysis_v1/figures/figure2_physx_robustness_curves.svg",
+    "results_analysis/formal_analysis_v1/figures/figure3_safety_margin_benefit_cost.png",
+    "results_analysis/formal_analysis_v1/figures/figure3_safety_margin_benefit_cost.svg",
+    "results_analysis/formal_analysis_v1/figures/figure4_cross_engine_disagreement.png",
+    "results_analysis/formal_analysis_v1/figures/figure4_cross_engine_disagreement.svg"
+  ],
+  "input_sha256": {
+    "results_formal/rq1_rq2_robustness_v1/audit.json": "5166326faf7fd931dfa9a64ec6f5a06c3969af30ee910e0d876292ed4f6d6a3a",
+    "results_formal/rq1_rq2_robustness_v1/condition_metrics.csv": "ca4a140043bccb769c52361ede8559f536ec41b762156aa9e60578b336f7df5c",
+    "results_formal/rq1_rq2_robustness_v1/robustness_curves.csv": "a6b4ad38e5ff5f7531237e6fd7bb1058cc932121f34beb152ede20472a015d96",
+    "results_formal/rq1_rq2_robustness_v1/curobo_comparison.csv": "bc586e1586d8021bedffaf0958ed1f9fe8bdd461f9f25b7b4455f6f27b58e881",
+    "results_formal/rq2_planning_time_v1/audit.json": "4b24e6dfaff7bfbb76d6c140e6ac2748ab4ecb114061e819cfe286ba60ae8429",
+    "results_formal/rq2_planning_time_v1/condition_summary.csv": "952c579b056affefac17f19deac1a089f3d1a232809272e00bb2aee4d580f22e",
+    "configs/experiments/formal_safety_margin_matrix_v1.json": "8869b9709cf6c84274d77e2d28a2bf8354eb15f3e3740362da0b2d8871880d04"
+  }
+}

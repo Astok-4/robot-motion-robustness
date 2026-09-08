@@ -1,0 +1,40 @@
+{
+  "status": "RQ2_CONSTRAINED_SPACE_SUPPLEMENTARY_ANALYSIS_V1_AUDIT_PASS",
+  "analysis_type": "post-hoc supplementary controlled stress test",
+  "checks": {
+    "exactly_20_conditions": true,
+    "four_by_five": true,
+    "measured_runs_600": true,
+    "all_runs_linked": true,
+    "no_planning_failures_deleted": true,
+    "no_route_variation_deleted": true,
+    "all_route_counts_preserved": true,
+    "no_condition_removed": true,
+    "no_significance_tests": true,
+    "no_regression": true,
+    "no_new_experiment": true,
+    "post_hoc_label": true,
+    "main_formal_analysis_unchanged": true
+  },
+  "conditions": 20,
+  "measured_runs": 600,
+  "passage_conditions": 9,
+  "upper_bypass_conditions": 11,
+  "main_formal_analysis_tree_sha256": {
+    "results_analysis/formal_analysis_v1/analysis_audit.json": "8bb20a7fb1c404ea88150ebf7fdc5a59c1eda7b99c001ea193e8e0b88af3de93",
+    "results_analysis/formal_analysis_v1/figures/figure1_clearance_vs_physx_tolerance.png": "e9c96de4fb0366cd83ca5eed46073627924185fb60e5299acf293286171085af",
+    "results_analysis/formal_analysis_v1/figures/figure1_clearance_vs_physx_tolerance.svg": "fa60b999db11d60609b82a8035dd6cd9f7626e88b9aa225be014ba649ab2bf6a",
+    "results_analysis/formal_analysis_v1/figures/figure2_physx_robustness_curves.png": "20ae31428e1a24815de818481fe8b1a6506476d7204110e301bd138d1be4bc77",
+    "results_analysis/formal_analysis_v1/figures/figure2_physx_robustness_curves.svg": "142e77b671eef6e6992e96cd57f6ab39ee530ac3fd87f5b9cef9028fb2ca7e0d",
+    "results_analysis/formal_analysis_v1/figures/figure3_safety_margin_benefit_cost.png": "070da96ad713eec6195463f433bc5ddd2b082518d2b7d17eb5c13cbbc5fc7bbf",
+    "results_analysis/formal_analysis_v1/figures/figure3_safety_margin_benefit_cost.svg": "da268fb90c61bc17c86838d583f67e9f35ef609825b94561330aacfb8f2233f5",
+    "results_analysis/formal_analysis_v1/figures/figure4_cross_engine_disagreement.png": "8b74cadcaecc07786a9f8a5dfb8470a2ef29118eeb961682f727712be4cc70aa",
+    "results_analysis/formal_analysis_v1/figures/figure4_cross_engine_disagreement.svg": "c0ad779989daf231c986e0cb34f4d90ac54b10defd0fef5e33bd7e03b0515264",
+    "results_analysis/formal_analysis_v1/formal_condition_table.csv": "f404a0f3b7e989508dcea142e34fba0ddc77506c1aec18042a2258f9556d7ee7",
+    "results_analysis/formal_analysis_v1/rq1_scene_trends.csv": "5741fac683462dfba970f4833911f5bde0f84267a59413552cde97eb7f6c824f",
+    "results_analysis/formal_analysis_v1/rq2_tradeoff_summary.csv": "753a62efac9fa73b9b36c4eadf5efb0f9acad9eb691ea0de38f8167b66e0e115",
+    "results_analysis/formal_analysis_v1/rq3_cross_engine_summary.csv": "5d3c05fd7d5da25949a3da90953623a702943cd4da99dd41fc233e15f45f9dd5",
+    "results_analysis/formal_analysis_v1/rq3_disagreement_distances.csv": "64ed861fb81e65f4f7a313a43b24467033755ac91f6cd7ff0ef81267a7f3f9d6"
+  },
+  "source_formal_audit": "FORMAL_RQ2_CONSTRAINED_SPACE_STRESS_TEST_V1_AUDIT_PASS"
+}
