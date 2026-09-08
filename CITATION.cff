@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "robot-motion-robustness"
+version: "0.1.0"
+type: software
+authors:
+  - given-names: Zirui
+    family-names: Guo
+    orcid: "https://orcid.org/0009-0006-2366-5218"
+license: MIT
+abstract: >-
+  This reproducibility software package supports the empirical evaluation of
+  frozen cuRobo-generated Franka Panda manipulator trajectories under
+  controlled environment perturbations, with independent sampled-state
+  collision validation using Isaac Sim and PhysX.
+keywords:
+  - robotics
+  - motion planning
+  - collision checking
+  - trajectory robustness
+  - cuRobo
+  - Isaac Sim
+  - PhysX
+  - Franka Panda
+  - reproducibility
+repository-code: "https://github.com/Astok-4/robot-motion-robustness"
